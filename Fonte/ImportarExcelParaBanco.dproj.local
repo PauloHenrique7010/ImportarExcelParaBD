@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2020/06/02 18:43:50.000.874,=C:\Users\Paulo\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2020/06/02 19:03:12.000.588,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\PrincipalForm.dfm=C:\Users\Paulo\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2020/06/02 19:03:12.000.588,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\PrincipalForm.pas=C:\Users\Paulo\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2020/06/02 19:03:24.000.408,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\ImportarExcelParaBanco.dproj=C:\Users\Paulo\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2020/06/02 19:16:29.000.442,=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.pas</Transaction>
+    <Transaction>2020/06/02 19:16:40.000.275,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.pas=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\IDETheme.ActnCtrls.pas</Transaction>
+    <Transaction>2020/06/02 19:22:13.000.674,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\IDETheme.ActnCtrls.pas=</Transaction>
+    <Transaction>2020/06/02 20:05:51.000.110,=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.pas</Transaction>
+    <Transaction>2020/06/02 20:05:57.000.045,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.pas=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\ConfiguracoesForm.pas</Transaction>
+    <Transaction>2020/06/02 20:05:57.000.045,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.dfm=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\ConfiguracoesForm.dfm</Transaction>
+    <Transaction>2020/06/02 20:08:49.000.512,=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.pas</Transaction>
+    <Transaction>2020/06/02 20:08:58.000.419,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.dfm=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\ConexaoData.dfm</Transaction>
+    <Transaction>2020/06/02 20:08:58.000.419,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.pas=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\ConexaoData.pas</Transaction>
+  </Transactions>
+</BorlandProject>

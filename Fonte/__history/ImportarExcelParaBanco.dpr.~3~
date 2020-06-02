@@ -1,0 +1,16 @@
+program ImportarExcelParaBanco;
+
+uses
+  Vcl.Forms,
+  PrincipalForm in 'PrincipalForm.pas' {PrincipalFrm},
+  ConfiguracoesForm in 'ConfiguracoesForm.pas' {Form1};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TPrincipalFrm, PrincipalFrm);
+  Application.CreateForm(TForm1, Form1);
+  Application.Run;
+end.
