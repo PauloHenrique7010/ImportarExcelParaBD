@@ -32,8 +32,11 @@ type
     procedure rdbAdicionarClick(Sender: TObject);
     procedure actLimparCaminhoExecute(Sender: TObject);
     procedure actImportarExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
+    lColunaNome, lColunaTipo : TStringList;
     function importarExcel:boolean;
+    procedure carregarColunasBanco;
   public
     { Public declarations }
   end;
@@ -45,9 +48,16 @@ implementation
 
 {$R *.dfm}
 
+uses ConfiguracoesForm;
+
 procedure TPrincipalFrm.actConfiguracoesExecute(Sender: TObject);
 begin
-//
+  Application.CreateForm(TConfiguracoesFrm, ConfiguracoesFrm);
+  try
+    ConfiguracoesFrm.ShowModal;
+  finally
+    FreeAndNil(ConfiguracoesFrm);
+  end;
 end;
 
 procedure TPrincipalFrm.actFecharExecute(Sender: TObject);
@@ -89,6 +99,46 @@ begin
   begin
     edtCaminhoExcel.Text := OpenDialog1.FileName;
   end;
+end;
+
+procedure TPrincipalFrm.carregarColunasBanco;
+var
+  arq: TextFile; { declarando a variável "arq" do tipo arquivo texto }
+  linha: string;
+  caminho : string;
+  nomeColuna, tipoColuna : string;
+  lista : TStringList;
+begin
+  caminho := ExtractFileDir(ParamStr(0))+'\colunas.txt';
+  lista := Tstringlist.Create;
+  AssignFile(arq, caminho);
+
+  {$I-}         // desativa a diretiva de Input
+  Reset(arq);   // [ 3 ] Abre o arquivo texto para leitura
+  {$I+}         // ativa a diretiva de Input
+
+  if (IOResult <> 0) then
+    ShowMessage('não foi possivel abrir')
+  else
+  begin
+    while (not eof(arq)) do
+    begin
+      readln(arq, linha);
+      lista.Delimiter := ' ';
+      lista.DelimitedText := linha;
+      lColunaNome.Add(lista.Strings[0]);
+      lColunaTipo.Add(lista.Strings[1]);
+    end;
+
+    CloseFile(arq);
+  end;
+end;
+
+procedure TPrincipalFrm.FormCreate(Sender: TObject);
+begin
+  lColunaNome := TStringList.Create;
+  lColunaTipo := TStringList.Create;
+  carregarColunasBanco;
 end;
 
 function TPrincipalFrm.importarExcel: boolean;

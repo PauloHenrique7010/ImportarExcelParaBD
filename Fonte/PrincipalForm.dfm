@@ -12,6 +12,7 @@ object PrincipalFrm: TPrincipalFrm
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnCreate = FormCreate
   DesignSize = (
     502
     184)
@@ -26,7 +27,6 @@ object PrincipalFrm: TPrincipalFrm
     Anchors = [akRight, akBottom]
     Caption = 'FECHAR(ESC)'
     TabOrder = 0
-    ExplicitLeft = 359
   end
   object btnConfiguracao: TBitBtn
     Left = 394
@@ -37,7 +37,6 @@ object PrincipalFrm: TPrincipalFrm
     Anchors = [akRight, akBottom]
     Caption = 'Configura'#231#245'es'
     TabOrder = 1
-    ExplicitLeft = 359
   end
   object edtCaminhoExcel: TEdit
     Left = 24

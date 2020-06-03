@@ -1,0 +1,110 @@
+object ConexaoFrm: TConexaoFrm
+  Left = 0
+  Top = 0
+  Caption = 'Conectar ao banco'
+  ClientHeight = 188
+  ClientWidth = 343
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  DesignSize = (
+    343
+    188)
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 32
+    Top = 40
+    Width = 22
+    Height = 13
+    Caption = 'Host'
+  end
+  object Label2: TLabel
+    Left = 32
+    Top = 80
+    Width = 25
+    Height = 13
+    Caption = 'Login'
+  end
+  object Label3: TLabel
+    Left = 32
+    Top = 120
+    Width = 30
+    Height = 13
+    Caption = 'Senha'
+  end
+  object Label4: TLabel
+    Left = 32
+    Top = 159
+    Width = 26
+    Height = 13
+    Caption = 'Porta'
+  end
+  object edtHost: TEdit
+    Left = 88
+    Top = 37
+    Width = 121
+    Height = 21
+    TabOrder = 0
+  end
+  object edtLogin: TEdit
+    Left = 88
+    Top = 77
+    Width = 121
+    Height = 21
+    TabOrder = 1
+  end
+  object edtPorta: TEdit
+    Left = 88
+    Top = 156
+    Width = 121
+    Height = 21
+    TabOrder = 2
+  end
+  object edtSenha: TEdit
+    Left = 88
+    Top = 117
+    Width = 121
+    Height = 21
+    PasswordChar = '*'
+    TabOrder = 3
+  end
+  object btnFechar: TBitBtn
+    Left = 235
+    Top = 155
+    Width = 100
+    Height = 25
+    Action = actFechar
+    Anchors = [akRight, akBottom]
+    Caption = 'FECHAR(ESC)'
+    TabOrder = 4
+    ExplicitLeft = 236
+    ExplicitTop = 173
+  end
+  object btnConectar: TBitBtn
+    Left = 235
+    Top = 124
+    Width = 100
+    Height = 25
+    Action = actConectar
+    Anchors = [akRight, akBottom]
+    Caption = 'CONECTAR'
+    TabOrder = 5
+  end
+  object ActionList1: TActionList
+    object actFechar: TAction
+      Caption = 'FECHAR(ESC)'
+      ShortCut = 27
+      OnExecute = actFecharExecute
+    end
+    object actConectar: TAction
+      Caption = 'CONECTAR'
+      OnExecute = actConectarExecute
+    end
+  end
+end

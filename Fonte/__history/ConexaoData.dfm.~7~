@@ -1,0 +1,20 @@
+object ConexaoDtm: TConexaoDtm
+  OldCreateOrder = False
+  Height = 150
+  Width = 215
+  object Conexao: TFDConnection
+    Params.Strings = (
+      'User_Name=root'
+      'Password=1234'
+      'Database=banco'
+      'DriverID=MySQL')
+    LoginPrompt = False
+    Left = 32
+    Top = 16
+  end
+  object FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink
+    VendorLib = 'C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Exe\libmysql.dll'
+    Left = 128
+    Top = 24
+  end
+end

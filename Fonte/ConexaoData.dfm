@@ -6,9 +6,9 @@ object ConexaoDtm: TConexaoDtm
     Params.Strings = (
       'User_Name=root'
       'Password=1234'
-      'Database=banco'
       'DriverID=MySQL')
-    Left = 88
-    Top = 56
+    LoginPrompt = False
+    Left = 56
+    Top = 32
   end
 end
