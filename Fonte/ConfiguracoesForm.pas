@@ -46,6 +46,7 @@ procedure TConfiguracoesFrm.actConfigurarBDExecute(Sender: TObject);
 begin
   Application.CreateForm(TConexaoFrm, ConexaoFrm);
   try
+    ConexaoFrm.Iniciar;
     ConexaoFrm.ShowModal;
   finally
     FreeAndNil(ConexaoFrm);
@@ -85,7 +86,9 @@ begin
   if (verificarPendencia) then
   begin
     if (existeBancoDeDados) then
-      Application.MessageBox('Banco de dados encontrado','Verificar',MB_ICONWARNING);
+      Application.MessageBox('Banco de dados encontrado','Verificar',MB_ICONWARNING)
+    else
+      Application.MessageBox('Não existe o banco de dados informado','Verificar',MB_ICONWARNING);
   end;
 end;
 

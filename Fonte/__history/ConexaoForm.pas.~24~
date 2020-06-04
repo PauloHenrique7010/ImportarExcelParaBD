@@ -1,0 +1,78 @@
+﻿unit ConexaoForm;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, System.Actions,
+  Vcl.ActnList, Vcl.Buttons;
+
+type
+  TConexaoFrm = class(TForm)
+    Label1: TLabel;
+    edtHost: TEdit;
+    Label2: TLabel;
+    edtLogin: TEdit;
+    Label3: TLabel;
+    edtPorta: TEdit;
+    Label4: TLabel;
+    edtSenha: TEdit;
+    btnFechar: TBitBtn;
+    ActionList1: TActionList;
+    actFechar: TAction;
+    actConectar: TAction;
+    btnConectar: TBitBtn;
+    Label5: TLabel;
+    edtBD: TEdit;
+    procedure actFecharExecute(Sender: TObject);
+    procedure actConectarExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  ConexaoFrm: TConexaoFrm;
+
+implementation
+
+{$R *.dfm}
+
+uses ConexaoData, IniFiles;
+
+procedure TConexaoFrm.actConectarExecute(Sender: TObject);
+var
+  conexaoIni : Tinifile;
+begin
+  try
+    ConexaoDtm.Conexao.Connected := False;
+    ConexaoDtm.Conexao.Params.Values['DriverID']:= 'MySQL';
+    ConexaoDtm.Conexao.Params.Values['Server']  := edtHost.Text;
+    ConexaoDtm.Conexao.Params.Values['Database']  := edtBD.Text;
+    ConexaoDtm.Conexao.Params.Values['User_name'] := edtLogin.Text;
+    ConexaoDtm.Conexao.Params.Values['Password']  := edtSenha.Text;
+    ConexaoDtm.Conexao.Connected := True;
+    Application.MessageBox('Conectado com sucesso! será criado um arquivo com as configurações para conexão','CONEXÃO',MB_ICONWARNING);
+
+    conexaoIni := TIniFile.Create(ExtractFilePath(ParamStr(0)) + 'Config.ini');
+
+    conexaoIni.WriteString('Conexao','User_name',edtLogin.Text);
+    oArquivoIni.WriteString('Servidor', 'Password', edtSenha.Text);
+    oArquivoIni.WriteString('Servidor', 'DriverID', EdtDriverID.Text);
+    oArquivoIni.WriteString('Servidor', 'Server', EdtServer.Text);
+    oArquivoIni.WriteString('Servidor', 'Database', edtBanco.Text);
+
+
+    //salva um arquivo com as conf de conexao
+  except
+    Application.MessageBox('Não foi possível conectar ao banco de dados informado','CONECTAR',MB_ICONERROR);
+  end;
+end;
+
+procedure TConexaoFrm.actFecharExecute(Sender: TObject);
+begin
+  Close;
+end;
+
+end.

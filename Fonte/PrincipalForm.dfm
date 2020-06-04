@@ -3,7 +3,7 @@ object PrincipalFrm: TPrincipalFrm
   Top = 0
   Caption = 'IMPORTAR ARQUIVO EXCEL PARA BANCO DE DADOS'
   ClientHeight = 184
-  ClientWidth = 502
+  ClientWidth = 473
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -14,12 +14,12 @@ object PrincipalFrm: TPrincipalFrm
   Position = poScreenCenter
   OnCreate = FormCreate
   DesignSize = (
-    502
+    473
     184)
   PixelsPerInch = 96
   TextHeight = 13
   object btnFechar: TBitBtn
-    Left = 394
+    Left = 365
     Top = 151
     Width = 100
     Height = 25
@@ -27,9 +27,10 @@ object PrincipalFrm: TPrincipalFrm
     Anchors = [akRight, akBottom]
     Caption = 'FECHAR(ESC)'
     TabOrder = 0
+    ExplicitLeft = 394
   end
   object btnConfiguracao: TBitBtn
-    Left = 394
+    Left = 365
     Top = 120
     Width = 100
     Height = 25
@@ -37,6 +38,7 @@ object PrincipalFrm: TPrincipalFrm
     Anchors = [akRight, akBottom]
     Caption = 'Configura'#231#245'es'
     TabOrder = 1
+    ExplicitLeft = 394
   end
   object edtCaminhoExcel: TEdit
     Left = 24
@@ -93,7 +95,7 @@ object PrincipalFrm: TPrincipalFrm
     TabOrder = 5
   end
   object btnImportar: TBitBtn
-    Left = 160
+    Left = 146
     Top = 120
     Width = 150
     Height = 41
@@ -101,6 +103,7 @@ object PrincipalFrm: TPrincipalFrm
     Anchors = []
     Caption = 'IMPORTAR'
     TabOrder = 6
+    ExplicitLeft = 160
   end
   object OpenDialog1: TOpenDialog
     Left = 40

@@ -2,7 +2,7 @@ object ConexaoFrm: TConexaoFrm
   Left = 0
   Top = 0
   Caption = 'Conectar ao banco'
-  ClientHeight = 188
+  ClientHeight = 261
   ClientWidth = 343
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -14,7 +14,7 @@ object ConexaoFrm: TConexaoFrm
   Position = poScreenCenter
   DesignSize = (
     343
-    188)
+    261)
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
@@ -44,6 +44,13 @@ object ConexaoFrm: TConexaoFrm
     Width = 26
     Height = 13
     Caption = 'Porta'
+  end
+  object Label5: TLabel
+    Left = 32
+    Top = 195
+    Width = 13
+    Height = 13
+    Caption = 'BD'
   end
   object edtHost: TEdit
     Left = 88
@@ -76,25 +83,32 @@ object ConexaoFrm: TConexaoFrm
   end
   object btnFechar: TBitBtn
     Left = 235
-    Top = 155
+    Top = 228
     Width = 100
     Height = 25
     Action = actFechar
     Anchors = [akRight, akBottom]
     Caption = 'FECHAR(ESC)'
     TabOrder = 4
-    ExplicitLeft = 236
-    ExplicitTop = 173
+    ExplicitTop = 155
   end
   object btnConectar: TBitBtn
     Left = 235
-    Top = 124
+    Top = 197
     Width = 100
     Height = 25
     Action = actConectar
     Anchors = [akRight, akBottom]
     Caption = 'CONECTAR'
     TabOrder = 5
+    ExplicitTop = 124
+  end
+  object edtBD: TEdit
+    Left = 88
+    Top = 192
+    Width = 121
+    Height = 21
+    TabOrder = 6
   end
   object ActionList1: TActionList
     object actFechar: TAction

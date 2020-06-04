@@ -22,12 +22,15 @@ type
     actFechar: TAction;
     actConectar: TAction;
     btnConectar: TBitBtn;
+    Label5: TLabel;
+    edtBD: TEdit;
     procedure actFecharExecute(Sender: TObject);
     procedure actConectarExecute(Sender: TObject);
   private
     { Private declarations }
   public
-    { Public declarations }
+    procedure Iniciar;
+
   end;
 
 var
@@ -37,14 +40,53 @@ implementation
 
 {$R *.dfm}
 
+uses ConexaoData, IniFiles, PrincipalForm;
+
 procedure TConexaoFrm.actConectarExecute(Sender: TObject);
+var
+  conexaoIni : Tinifile;
 begin
-//
+  try
+    ConexaoDtm.Conexao.Connected := False;
+    ConexaoDtm.Conexao.Params.Values['DriverID']  := 'MySQL';
+    ConexaoDtm.Conexao.Params.Values['Server']    := edtHost.Text;
+    ConexaoDtm.Conexao.Params.Values['Database']  := edtBD.Text;
+    ConexaoDtm.Conexao.Params.Values['User_name'] := edtLogin.Text;
+    ConexaoDtm.Conexao.Params.Values['Password']  := edtSenha.Text;
+    ConexaoDtm.Conexao.Params.Values['Port']      := edtPorta.Text;
+    ConexaoDtm.Conexao.Connected := True;
+    Application.MessageBox('Conectado com sucesso! será criado um arquivo com as configurações para conexão','CONEXÃO',MB_ICONWARNING);
+
+    conexaoIni := TIniFile.Create(PrincipalFrm.GcaminhoConexaoIni);
+
+    conexaoIni.WriteString('Conexao', 'User_name',edtLogin.Text);
+    conexaoIni.WriteString('Conexao', 'Password', edtSenha.Text);
+    conexaoIni.WriteString('Conexao', 'DriverID', 'MySQL');
+    conexaoIni.WriteString('Conexao', 'Server', edtHost.Text);
+    conexaoIni.WriteString('Conexao', 'Database', edtBD.Text);
+    conexaoIni.WriteString('Conexao', 'Port', edtPorta.Text);
+
+    conexaoIni.Free;
+    Close;
+    //salva um arquivo com as conf de conexao
+  except
+    Application.MessageBox('Não foi possível conectar ao banco de dados informado','CONECTAR',MB_ICONERROR);
+  end;
+
 end;
 
 procedure TConexaoFrm.actFecharExecute(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TConexaoFrm.Iniciar;
+begin
+  edtHost.Text  := ConexaoDtm.Conexao.Params.Values['Server'];
+  edtLogin.Text := ConexaoDtm.Conexao.Params.Values['User_name'];
+  edtSenha.Text := ConexaoDtm.Conexao.Params.Values['Password'];
+  edtBD.Text    := ConexaoDtm.Conexao.Params.Values['Database'];
+  edtPorta.Text := ConexaoDtm.Conexao.Params.Values['Port'];
 end;
 
 end.

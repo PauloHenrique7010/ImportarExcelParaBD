@@ -1,0 +1,65 @@
+unit ConexaoData;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
+  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.MySQL,
+  FireDAC.Phys.MySQLDef, FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client;
+
+type
+  TConexaoDtm = class(TDataModule)
+    Conexao: TFDConnection;
+  private
+    { Private declarations }
+  public
+    function Conectar:boolean;
+  end;
+
+var
+  ConexaoDtm: TConexaoDtm;
+
+implementation
+
+Uses Inifiles, Vcl.Forms, Winapi.Windows, PrincipalForm;
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+{ TConexaoDtm }
+
+function TConexaoDtm.Conectar: boolean;
+var
+  conexaoIni : TIniFile;
+begin
+  result := False;
+  if (FileExists(PrincipalFrm.GcaminhoConexaoIni) = false) then
+  begin
+   if (Application.messagebox('Conexão não foi configurada ou arquivo não '+'encontrado, Deseja configurar agora?','CONECTAR',mb_YesNo+mb_IconInformation+mb_DefButton2) = IDYES) then
+      close;
+  end
+  else
+  begin
+    conexaoIni := TIniFile.Create(PrincipalFrm.GcaminhoConexaoIni);
+    try
+      ConexaoDtm.Conexao.Connected := False;
+      ConexaoDtm.Conexao.Params.Values['DriverID']  := 'MySQL';
+      ConexaoDtm.Conexao.Params.Values['Server']    := conexaoIni.ReadString('Conexao', 'Server', EmptyStr);
+      ConexaoDtm.Conexao.Params.Values['Database']  := conexaoIni.ReadString('Conexao', 'Database', EmptyStr);
+      ConexaoDtm.Conexao.Params.Values['User_name'] := conexaoIni.ReadString('Conexao', 'User_name', EmptyStr);
+      ConexaoDtm.Conexao.Params.Values['Password']  := conexaoIni.ReadString('Conexao', 'Password', EmptyStr);
+      ConexaoDtm.Conexao.Params.Values['Port']      := conexaoIni.ReadString('Conexao', 'Port', EmptyStr);
+      ConexaoDtm.Conexao.Connected := True;
+
+      result := True;
+    except
+      on e:exception do
+        Application.messagebox(Pchar('Não foi possível conectar, ocorreu o seguinte erro: '+#13+e.Message),'CONECTAR',MB_ICONERROR);
+    end;
+    conexaoIni.Free;
+  end;
+end;
+
+end.

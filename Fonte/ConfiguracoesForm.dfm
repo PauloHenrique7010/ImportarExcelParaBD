@@ -26,8 +26,6 @@ object ConfiguracoesFrm: TConfiguracoesFrm
     Anchors = [akRight, akBottom]
     Caption = 'FECHAR(ESC)'
     TabOrder = 0
-    ExplicitLeft = 404
-    ExplicitTop = 424
   end
   object btnVerificarDatabase: TBitBtn
     Left = 323

@@ -38,7 +38,7 @@ type
     function importarExcel:boolean;
     procedure carregarColunasBanco;
   public
-    { Public declarations }
+    GcaminhoConexaoIni : string;
   end;
 
 var
@@ -48,7 +48,7 @@ implementation
 
 {$R *.dfm}
 
-uses ConfiguracoesForm;
+uses ConfiguracoesForm, ConexaoData, ConexaoForm;
 
 procedure TPrincipalFrm.actConfiguracoesExecute(Sender: TObject);
 begin
@@ -136,6 +136,29 @@ end;
 
 procedure TPrincipalFrm.FormCreate(Sender: TObject);
 begin
+  GcaminhoConexaoIni := ExtractFilePath(ParamStr(0)) + 'Conexao.ini';
+  if (FileExists(PrincipalFrm.GcaminhoConexaoIni) = false) then
+  begin
+    if (Application.messagebox('Conexão não foi configurada ou arquivo não '+'encontrado, Deseja configurar agora?','CONECTAR',mb_YesNo+mb_IconInformation+mb_DefButton2) = IDYES) then
+    begin
+      Application.CreateForm(TConexaoFrm, ConexaoFrm);
+      try
+        ConexaoFrm.ShowModal;
+      finally
+        FreeAndNil(ConexaoFrm);
+      end;
+    end;
+  end
+  else
+  begin
+    if (ConexaoDtm.Conectar = false) then
+      ShowMessage('Não foi possível conectar!');
+  end;
+
+  if (ConexaoDtm.Conexao.Connected = false) then
+    Application.Terminate;
+
+
   lColunaNome := TStringList.Create;
   lColunaTipo := TStringList.Create;
   carregarColunasBanco;
