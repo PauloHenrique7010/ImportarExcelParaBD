@@ -71,7 +71,9 @@ object ConexaoFrm: TConexaoFrm
     Top = 156
     Width = 121
     Height = 21
-    TabOrder = 2
+    NumbersOnly = True
+    TabOrder = 3
+    Text = '3306'
   end
   object edtSenha: TEdit
     Left = 88
@@ -79,7 +81,7 @@ object ConexaoFrm: TConexaoFrm
     Width = 121
     Height = 21
     PasswordChar = '*'
-    TabOrder = 3
+    TabOrder = 2
   end
   object btnFechar: TBitBtn
     Left = 235
@@ -89,8 +91,7 @@ object ConexaoFrm: TConexaoFrm
     Action = actFechar
     Anchors = [akRight, akBottom]
     Caption = 'FECHAR(ESC)'
-    TabOrder = 4
-    ExplicitTop = 155
+    TabOrder = 6
   end
   object btnConectar: TBitBtn
     Left = 235
@@ -101,14 +102,13 @@ object ConexaoFrm: TConexaoFrm
     Anchors = [akRight, akBottom]
     Caption = 'CONECTAR'
     TabOrder = 5
-    ExplicitTop = 124
   end
   object edtBD: TEdit
     Left = 88
     Top = 192
     Width = 121
     Height = 21
-    TabOrder = 6
+    TabOrder = 4
   end
   object ActionList1: TActionList
     object actFechar: TAction

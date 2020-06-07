@@ -33,7 +33,7 @@ object ConfiguracoesFrm: TConfiguracoesFrm
     Width = 149
     Height = 25
     Action = actVerificarDatabase
-    Caption = 'VERIFICAR BANCO EXISTE'
+    Caption = 'VERIFICAR SE EXISTE'
     TabOrder = 1
   end
   object edtNomeDatabase: TEdit
@@ -50,7 +50,7 @@ object ConfiguracoesFrm: TConfiguracoesFrm
     Width = 85
     Height = 25
     Action = actCriarDatabase
-    Caption = 'CRIAR BANCO'
+    Caption = 'CRIAR'
     TabOrder = 3
   end
   object btnConfigurarConexao: TBitBtn
@@ -62,6 +62,15 @@ object ConfiguracoesFrm: TConfiguracoesFrm
     Caption = 'CONFIGURAR CONEX'#195'O'
     TabOrder = 4
   end
+  object btnConfigurarTabela: TBitBtn
+    Left = 232
+    Top = 68
+    Width = 85
+    Height = 25
+    Action = actConfigurarTabela
+    Caption = 'CONFIGURAR'
+    TabOrder = 5
+  end
   object ActionList1: TActionList
     object actFechar: TAction
       Caption = 'FECHAR(ESC)'
@@ -69,16 +78,20 @@ object ConfiguracoesFrm: TConfiguracoesFrm
       OnExecute = actFecharExecute
     end
     object actCriarDatabase: TAction
-      Caption = 'CRIAR BANCO'
+      Caption = 'CRIAR'
       OnExecute = actCriarDatabaseExecute
     end
     object actVerificarDatabase: TAction
-      Caption = 'VERIFICAR BANCO EXISTE'
+      Caption = 'VERIFICAR SE EXISTE'
       OnExecute = actVerificarDatabaseExecute
     end
     object actConfigurarBD: TAction
       Caption = 'CONFIGURAR CONEX'#195'O'
       OnExecute = actConfigurarBDExecute
+    end
+    object actConfigurarTabela: TAction
+      Caption = 'CONFIGURAR'
+      OnExecute = actConfigurarTabelaExecute
     end
   end
 end

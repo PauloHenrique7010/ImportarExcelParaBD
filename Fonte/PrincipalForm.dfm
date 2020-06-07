@@ -27,7 +27,6 @@ object PrincipalFrm: TPrincipalFrm
     Anchors = [akRight, akBottom]
     Caption = 'FECHAR(ESC)'
     TabOrder = 0
-    ExplicitLeft = 394
   end
   object btnConfiguracao: TBitBtn
     Left = 365
@@ -38,7 +37,6 @@ object PrincipalFrm: TPrincipalFrm
     Anchors = [akRight, akBottom]
     Caption = 'Configura'#231#245'es'
     TabOrder = 1
-    ExplicitLeft = 394
   end
   object edtCaminhoExcel: TEdit
     Left = 24
@@ -103,7 +101,14 @@ object PrincipalFrm: TPrincipalFrm
     Anchors = []
     Caption = 'IMPORTAR'
     TabOrder = 6
-    ExplicitLeft = 160
+  end
+  object ListBox1: TListBox
+    Left = 8
+    Top = 74
+    Width = 121
+    Height = 97
+    ItemHeight = 13
+    TabOrder = 7
   end
   object OpenDialog1: TOpenDialog
     Left = 40
@@ -130,5 +135,13 @@ object PrincipalFrm: TPrincipalFrm
       Caption = 'IMPORTAR'
       OnExecute = actImportarExecute
     end
+  end
+  object qryImportar: TFDQuery
+    Connection = ConexaoDtm.Conexao
+    Left = 80
+  end
+  object cmdImportar: TFDCommand
+    Connection = ConexaoDtm.Conexao
+    Left = 144
   end
 end

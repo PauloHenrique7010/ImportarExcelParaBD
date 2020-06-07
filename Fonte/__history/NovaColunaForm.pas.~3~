@@ -1,0 +1,36 @@
+unit NovaColunaForm;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, System.Actions,
+  Vcl.ActnList, Vcl.Buttons;
+
+type
+  TNovaColunaFrm = class(TForm)
+    btnFechar: TBitBtn;
+    ActionList1: TActionList;
+    actFechar: TAction;
+    actAdicionarColuna: TAction;
+    edtNomeColuna: TEdit;
+    procedure actAdicionarColunaExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  NovaColunaFrm: TNovaColunaFrm;
+
+implementation
+
+{$R *.dfm}
+
+procedure TNovaColunaFrm.actAdicionarColunaExecute(Sender: TObject);
+begin
+  result := mrOk;
+end;
+
+end.

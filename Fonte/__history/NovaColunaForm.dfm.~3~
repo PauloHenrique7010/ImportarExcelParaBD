@@ -1,0 +1,46 @@
+object NovaColunaFrm: TNovaColunaFrm
+  Left = 0
+  Top = 0
+  Caption = 'NOVA COLUNA'
+  ClientHeight = 155
+  ClientWidth = 364
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  DesignSize = (
+    364
+    155)
+  PixelsPerInch = 96
+  TextHeight = 13
+  object btnFechar: TBitBtn
+    Left = 256
+    Top = 122
+    Width = 100
+    Height = 25
+    Anchors = [akRight, akBottom]
+    Caption = 'FECHAR(ESC)'
+    TabOrder = 0
+  end
+  object edtNomeColuna: TEdit
+    Left = 24
+    Top = 31
+    Width = 197
+    Height = 21
+    TabOrder = 1
+    TextHint = 'nome varchar(50) not null'
+  end
+  object ActionList1: TActionList
+    object actFechar: TAction
+      Caption = 'FECHAR(ESC)'
+      ShortCut = 27
+    end
+    object actAdicionarColuna: TAction
+      Caption = 'ADICIONAR'
+      OnExecute = actAdicionarColunaExecute
+    end
+  end
+end

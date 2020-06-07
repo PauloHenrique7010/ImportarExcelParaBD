@@ -5,7 +5,10 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Actions, Vcl.ActnList,
-  Vcl.StdCtrls, Vcl.Buttons, Vcl.ActnMan, comobj;
+  Vcl.StdCtrls, Vcl.Buttons, Vcl.ActnMan, comobj, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
+  Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client;
 
 type
   TPrincipalFrm = class(TForm)
@@ -25,6 +28,9 @@ type
     btnLimparCaminho: TBitBtn;
     actImportar: TAction;
     btnImportar: TBitBtn;
+    ListBox1: TListBox;
+    qryImportar: TFDQuery;
+    cmdImportar: TFDCommand;
     procedure actFecharExecute(Sender: TObject);
     procedure actPegarExcelExecute(Sender: TObject);
     procedure actConfiguracoesExecute(Sender: TObject);
@@ -39,6 +45,7 @@ type
     procedure carregarColunasBanco;
   public
     GcaminhoConexaoIni : string;
+    caminhoEXE:string;
   end;
 
 var
@@ -54,6 +61,7 @@ procedure TPrincipalFrm.actConfiguracoesExecute(Sender: TObject);
 begin
   Application.CreateForm(TConfiguracoesFrm, ConfiguracoesFrm);
   try
+    ConfiguracoesFrm.Iniciar;
     ConfiguracoesFrm.ShowModal;
   finally
     FreeAndNil(ConfiguracoesFrm);
@@ -109,7 +117,7 @@ var
   nomeColuna, tipoColuna : string;
   lista : TStringList;
 begin
-  caminho := ExtractFileDir(ParamStr(0))+'\colunas.txt';
+  caminho := CaminhoEXE+'\colunas.txt';
   lista := Tstringlist.Create;
   AssignFile(arq, caminho);
 
@@ -137,6 +145,7 @@ end;
 procedure TPrincipalFrm.FormCreate(Sender: TObject);
 begin
   GcaminhoConexaoIni := ExtractFilePath(ParamStr(0)) + 'Conexao.ini';
+  caminhoEXE := ExtractFilePath(ParamStr(0));
   if (FileExists(PrincipalFrm.GcaminhoConexaoIni) = false) then
   begin
     if (Application.messagebox('Conexão não foi configurada ou arquivo não '+'encontrado, Deseja configurar agora?','CONECTAR',mb_YesNo+mb_IconInformation+mb_DefButton2) = IDYES) then
@@ -167,27 +176,56 @@ end;
 function TPrincipalFrm.importarExcel: boolean;
 var
    excel, sheet: OLEVariant;
-   x, y, linha, r: Integer;
+   totalLinha, totalColuna: Integer;
+   cont : integer;
    nome : string;
+   matriz : array of array of string;
+
+   colunasSQL : string;
+   valuesSQL : string;
+  I: Integer;
+  qryImportar : TFDQuery;
 begin
   Result := False;
   // Cria Excel- OLE Object
   excel := CreateOleObject('Excel.Application');
+  qryImportar := TFDQuery.Create(nil);
   try
     Excel.WorkBooks.Open(OpenDialog1.FileName);
     Excel.Visible := false;
     Sheet := Excel.Workbooks[1].WorkSheets[1];
 
     // Pegar o número da última linha
-    x := excel.ActiveCell.Row;
+    totalLinha := excel.ActiveCell.Row;
     // Pegar o número da última coluna
-    y := excel.ActiveCell.Column;
+    totalColuna := excel.ActiveCell.Column;
     //for linha := 2 to x do
-    linha := 2;
-    while linha < x do
+    totalLinha := 2;
+
+    colunasSQL := '';
+    for I := 0 to lColunaNome.Count-1 do
     begin
-      nome := Sheet.Cells[linha, 1].Value;
-      linha := linha  + 1;
+      if (colunasSQL <> '') then
+        colunasSQL := colunasSQL + ', ';
+      colunasSQL := colunasSQL + lColunaNome.Strings[I];
+    end;
+    colunasSQL := '('+colunasSQL+')';
+
+
+    qryImportar.Close;
+
+    for cont := 2 to (totalLinha+1) do
+    begin
+      for I := 1 to lColunaNome.Count do
+      begin
+        nome := Sheet.Cells[cont, i];
+
+
+
+      end;
+      
+      //coluna2 Sheet.Cells[cont, 2].value;
+
     end;
 
 
@@ -198,32 +236,29 @@ begin
 
 
 
-      // Seta xStringGrid linha e coluna
-      // Associaca a variant WorkSheet com a variant do Delphi
-      //RangeMatrix := XLSAplicacao.Range['A1', XLSAplicacao.Cells.Item[x, y]].Value;
-      // Cria o loop para listar os registros no TStringGrid
-      {k := 1;
-      repeat
-         for r := 1 to y do
-            XStringGrid.Cells[(r - 1), (k - 1)] := RangeMatrix[k, r];
-         Inc(k, 1);
-      until k > x;
-      RangeMatrix := Unassigned; }
-   finally
-   end;
-end; {
-begin
-  result := False;
-  try
 
-  except
-    on e:exception do
+
+
+
+
+
+
+    SetLength(Matriz,totalLinha,totalColuna);
+    for cont := 2 to (totalLinha+1) do
     begin
-
+      //linha, coluna
+      matriz[cont-2,0] := Sheet.Cells[cont, 1].value;
+      matriz[cont-2,1] := Sheet.Cells[cont, 2].value;
     end;
 
+    for cont := 2 to (totalLinha+1) do
+    begin
+      ListBox1.Items.Add(Matriz[cont-2,0]+'-'+Matriz[cont-2,1]);
+    end;
+  finally
+    excel.quit;
   end;
-end;             }
+end;
 
 procedure TPrincipalFrm.rdbAdicionarClick(Sender: TObject);
 begin

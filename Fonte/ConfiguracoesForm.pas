@@ -22,15 +22,19 @@ type
     BitBtn1: TBitBtn;
     btnConfigurarConexao: TBitBtn;
     actConfigurarBD: TAction;
+    btnConfigurarTabela: TBitBtn;
+    actConfigurarTabela: TAction;
     procedure actFecharExecute(Sender: TObject);
     procedure actVerificarDatabaseExecute(Sender: TObject);
     procedure actCriarDatabaseExecute(Sender: TObject);
     procedure actConfigurarBDExecute(Sender: TObject);
+    procedure actConfigurarTabelaExecute(Sender: TObject);
   private
     function existeBancoDeDados:boolean;
-    function verificarPendencia:boolean;
+    function confirmarDatabase:boolean;
+    function existeTabela:boolean;
   public
-    { Public declarations }
+    procedure Iniciar;
   end;
 
 var
@@ -40,7 +44,7 @@ implementation
 
 {$R *.dfm}
 
-uses ConexaoData, ConexaoForm;
+uses ConexaoData, ConexaoForm, ConfigurarTabelaForm;
 
 procedure TConfiguracoesFrm.actConfigurarBDExecute(Sender: TObject);
 begin
@@ -53,11 +57,25 @@ begin
   end;
 end;
 
+procedure TConfiguracoesFrm.actConfigurarTabelaExecute(Sender: TObject);
+begin
+  if ((confirmarDatabase) and (existeBancoDeDados) and (existeTabela)) then
+  begin
+    Application.CreateForm(TConfigurarTabelaFrm, ConfigurarTabelaFrm);
+    try
+      ConfigurarTabelaFrm.iniciar;
+      ConfigurarTabelaFrm.ShowModal;
+    finally
+      FreeAndNil(ConfigurarTabelaFrm);
+    end;
+  end;
+end;
+
 procedure TConfiguracoesFrm.actCriarDatabaseExecute(Sender: TObject);
 var
   cmd : TFDCommand;
 begin
-  if (verificarPendencia) then
+  if (confirmarDatabase) then
   begin
     if (existeBancoDeDados) then
       Application.MessageBox('Já existe um banco de dados com este nome!','Verificar',MB_ICONWARNING)
@@ -67,7 +85,7 @@ begin
       try
         cmd.Connection := ConexaoDtm.Conexao;
 
-        cmd.CommandText.Text := 'CREATE DATABASE IF NOT EXISTS '+edtNomeDatabase.Text;
+        
         cmd.Execute();
       finally
         cmd.Free;
@@ -83,7 +101,7 @@ end;
 
 procedure TConfiguracoesFrm.actVerificarDatabaseExecute(Sender: TObject);
 begin
-  if (verificarPendencia) then
+  if (confirmarDatabase) then
   begin
     if (existeBancoDeDados) then
       Application.MessageBox('Banco de dados encontrado','Verificar',MB_ICONWARNING)
@@ -113,7 +131,35 @@ begin
   end;
 end;
 
-function TConfiguracoesFrm.verificarPendencia: boolean;
+
+function TConfiguracoesFrm.existeTabela: boolean;
+var
+  qry : TFDQuery;
+begin
+  result := False;
+  qry := TFDQuery.Create(nil);
+  try
+    qry.Connection := ConexaoDtm.Conexao;
+
+    qry.Close;
+    qry.SQL.Clear;
+    qry.SQL.Add('SHOW TABLES like "raspagem_excel"');
+    qry.Open();
+    if (qry.RecordCount > 0) then
+      result := True
+    else
+      Application.MessageBox('Não existe a tabela raspagem_excel no banco de dados','CONFIGURAR',MB_ICONWARNING);
+  finally
+    qry.Free;
+  end;
+end;
+
+procedure TConfiguracoesFrm.Iniciar;
+begin
+  edtNomeDatabase.Text := ConexaoDtm.Conexao.Params.Database;
+end;
+
+function TConfiguracoesFrm.confirmarDatabase: boolean;
 var
   opOK  : boolean;
   msgAviso  : string;
@@ -132,5 +178,6 @@ begin
 
   result := opOK;
 end;
+
 
 end.
