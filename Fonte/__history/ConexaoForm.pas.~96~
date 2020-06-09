@@ -62,8 +62,11 @@ begin
       try
         cmd.Connection := ConexaoDtm.Conexao;
         cmd.CommandText.Text := 'CREATE DATABASE IF NOT EXISTS '+edtBd.Text;
+        cmd.Execute();
         cmd.CommandText.Text := 'USE '+edtBD.Text+';';
+        cmd.Execute();
         cmd.CommandTExt.Text := 'CREATE TABLE IF NOT EXISTS raspagem_excel (codigo int primary key auto_increment);';
+        cmd.Execute();
 
         ConexaoDtm.Conexao.Params.Values['Database']  := edtBD.Text;
       finally
@@ -71,7 +74,7 @@ begin
       end;
       Application.MessageBox('Conectado com sucesso! será criado um arquivo com as configurações para conexão','CONEXÃO',MB_ICONWARNING);
 
-      conexaoIni := TIniFile.Create(PrincipalFrm.GcaminhoConexaoIni);
+      conexaoIni := TIniFile.Create(PrincipalFrm.caminhoEXE+'\Conexao.ini');
 
       conexaoIni.WriteString('Conexao', 'User_name',edtLogin.Text);
       conexaoIni.WriteString('Conexao', 'Password', edtSenha.Text);
@@ -101,7 +104,7 @@ var
   ok : boolean;
 begin
   ok  := True;
-  msg := '';
+  msg := 'Verifique os campos abaixo: '+#13+#13;
 
   if (edtHost.Text = '') then
   begin

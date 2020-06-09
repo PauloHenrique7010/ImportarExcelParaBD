@@ -62,8 +62,11 @@ begin
       try
         cmd.Connection := ConexaoDtm.Conexao;
         cmd.CommandText.Text := 'CREATE DATABASE IF NOT EXISTS '+edtBd.Text;
+        cmd.Execute();
         cmd.CommandText.Text := 'USE '+edtBD.Text+';';
+        cmd.Execute();
         cmd.CommandTExt.Text := 'CREATE TABLE IF NOT EXISTS raspagem_excel (codigo int primary key auto_increment);';
+        cmd.Execute();
 
         ConexaoDtm.Conexao.Params.Values['Database']  := edtBD.Text;
       finally
@@ -101,7 +104,7 @@ var
   ok : boolean;
 begin
   ok  := True;
-  msg := '';
+  msg := 'Verifique os campos abaixo: '+#13+#13;
 
   if (edtHost.Text = '') then
   begin
@@ -129,7 +132,8 @@ begin
     ok  := False;
   end;
 
-
+  if (ok = false) then
+    Application.MessageBox(pchar(msg),'CONECTAR',MB_ICONINFORMATION);
   result := ok;
 end;
 

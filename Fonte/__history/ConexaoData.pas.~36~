@@ -39,7 +39,7 @@ var
 begin
   result := False;
 
-  conexaoIni := TIniFile.Create(PrincipalFrm.caminhoEXE+'Conexao.ini');
+  conexaoIni := TIniFile.Create(PrincipalFrm.GcaminhoConexaoIni);
   try
     ConexaoDtm.Conexao.Connected := False;
     ConexaoDtm.Conexao.Params.Values['DriverID']  := 'MySQL';

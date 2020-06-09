@@ -28,7 +28,6 @@ type
     btnLimparCaminho: TBitBtn;
     actImportar: TAction;
     btnImportar: TBitBtn;
-    qryImportar: TFDQuery;
     cmdImportar: TFDCommand;
     lblProgresso: TLabel;
     procedure actFecharExecute(Sender: TObject);
@@ -44,7 +43,6 @@ type
     function importarExcel:boolean;
     procedure carregarColunasBanco;
   public
-    GcaminhoConexaoIni : string;
     caminhoEXE:string;
   end;
 
@@ -145,9 +143,8 @@ end;
 
 procedure TPrincipalFrm.FormCreate(Sender: TObject);
 begin
-  GcaminhoConexaoIni := ExtractFilePath(ParamStr(0)) + 'Conexao.ini';
   caminhoEXE := ExtractFilePath(ParamStr(0));
-  if (FileExists(PrincipalFrm.GcaminhoConexaoIni) = false) then
+  if (FileExists(PrincipalFrm.caminhoEXE+'\Conexao.ini') = false) then
   begin
     if (Application.messagebox('Conexão não foi configurada ou arquivo não '+'encontrado, Deseja configurar agora?','CONECTAR',mb_YesNo+mb_IconInformation+mb_DefButton2) = IDYES) then
     begin
@@ -179,22 +176,12 @@ function TPrincipalFrm.importarExcel: boolean;
 var
    excel, sheet: OLEVariant;
    totalLinha, totalColuna: Integer;
-   cont : integer;
-   nome : string;
-   matriz : array of array of string;
-
-   colunasSQL : string;
-   valuesSQL : string;
-  I: Integer;
-
-  colunaExcel : integer;
+   cont, i : integer;
+   valorExcel : string;
+   colunasSQL, valuesSQL : string; //concateno para montar minha string sql
 begin
   Result := False;
-  // Cria Excel- OLE Object                        8
   excel := CreateOleObject('Excel.Application');
-  colunasSQL := '';
-  valuesSQL := '';
-  qryImportar := TFDQuery.Create(nil);
   try
     Excel.WorkBooks.Open(OpenDialog1.FileName);
     Excel.Visible := false;
@@ -204,9 +191,8 @@ begin
     totalLinha := excel.ActiveCell.Row;
     // Pegar o número da última coluna
     totalColuna := excel.ActiveCell.Column;
-    //for linha := 2 to x do
-    totalLinha := 2;
 
+    //monta a string que vai conter quais colunas serão utilizadas no insert
     colunasSQL := '';
     for I := 0 to lColunaBanco.Count-1 do
     begin
@@ -215,15 +201,6 @@ begin
       colunasSQL := colunasSQL + lColunaBanco.Strings[I];
     end;
     colunasSQL := '('+colunasSQL+')';
-
-
-    if (rdbZerar.Checked) then
-    begin
-      cmdImportar.CommandText.Text := 'truncate table raspagem_excel;';
-      cmdImportar.Execute();
-    end;
-
-    qryImportar.Close;
 
     lblProgresso.Visible := True;
     for cont := 2 to (totalLinha+2) do
@@ -235,16 +212,15 @@ begin
       valuesSQL := '(';
       for I := 0 to lColunaExcel.Count-1 do
       begin
-        colunaExcel := StrToInt(lColunaExcel.Strings[i]);
-        nome := Sheet.Cells[cont, colunaExcel].value;
+        valorExcel := Sheet.Cells[cont, StrToInt(lColunaExcel.Strings[i])].value;
 
         if (valuesSQL.Length > 1) then
           valuesSQL := valuesSQL + ', ';
 
         if (lColunaTipo.Strings[i] = 'string') then
-          valuesSQL := valuesSQL + '"'+nome+'"'
+          valuesSQL := valuesSQL + '"'+valorExcel+'"'
         else if (lColunaTipo.Strings[i] = 'integer') then
-          valuesSQL := valuesSQL + nome;
+          valuesSQL := valuesSQL + valorExcel;
       end;
       valuesSQL := valuesSQL + ')';
       cmdImportar.CommandText.Text := 'INSERT INTO raspagem_excel '+colunasSQL+

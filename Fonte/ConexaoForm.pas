@@ -52,7 +52,6 @@ begin
       ConexaoDtm.Conexao.Connected := False;
       ConexaoDtm.Conexao.Params.Values['DriverID']  := 'MySQL';
       ConexaoDtm.Conexao.Params.Values['Server']    := edtHost.Text;
-
       ConexaoDtm.Conexao.Params.Values['User_name'] := edtLogin.Text;
       ConexaoDtm.Conexao.Params.Values['Password']  := edtSenha.Text;
       ConexaoDtm.Conexao.Params.Values['Port']      := edtPorta.Text;
@@ -67,24 +66,28 @@ begin
         cmd.Execute();
         cmd.CommandTExt.Text := 'CREATE TABLE IF NOT EXISTS raspagem_excel (codigo int primary key auto_increment);';
         cmd.Execute();
-
+        //se conseguiu criar o banco de dados com o database, adiciona aos parametros
         ConexaoDtm.Conexao.Params.Values['Database']  := edtBD.Text;
+
+
+        conexaoIni := TIniFile.Create(PrincipalFrm.caminhoEXE+'\Conexao.ini');
+
+        conexaoIni.WriteString('Conexao', 'User_name',edtLogin.Text);
+        conexaoIni.WriteString('Conexao', 'Password', edtSenha.Text);
+        conexaoIni.WriteString('Conexao', 'DriverID', 'MySQL');
+        conexaoIni.WriteString('Conexao', 'Server', edtHost.Text);
+        conexaoIni.WriteString('Conexao', 'Database', edtBD.Text);
+        conexaoIni.WriteString('Conexao', 'Port', edtPorta.Text);
+
+        conexaoIni.Free;
+        Close;
+
       finally
         cmd.Free;
       end;
       Application.MessageBox('Conectado com sucesso! será criado um arquivo com as configurações para conexão','CONEXÃO',MB_ICONWARNING);
 
-      conexaoIni := TIniFile.Create(PrincipalFrm.GcaminhoConexaoIni);
 
-      conexaoIni.WriteString('Conexao', 'User_name',edtLogin.Text);
-      conexaoIni.WriteString('Conexao', 'Password', edtSenha.Text);
-      conexaoIni.WriteString('Conexao', 'DriverID', 'MySQL');
-      conexaoIni.WriteString('Conexao', 'Server', edtHost.Text);
-      conexaoIni.WriteString('Conexao', 'Database', edtBD.Text);
-      conexaoIni.WriteString('Conexao', 'Port', edtPorta.Text);
-
-      conexaoIni.Free;
-      Close;
       //salva um arquivo com as conf de conexao
     except
       Application.MessageBox('Não foi possível conectar ao banco de dados informado','CONECTAR',MB_ICONERROR);

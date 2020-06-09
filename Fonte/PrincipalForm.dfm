@@ -137,12 +137,8 @@ object PrincipalFrm: TPrincipalFrm
       OnExecute = actImportarExecute
     end
   end
-  object qryImportar: TFDQuery
-    Connection = ConexaoDtm.Conexao
-    Left = 80
-  end
   object cmdImportar: TFDCommand
     Connection = ConexaoDtm.Conexao
-    Left = 144
+    Left = 80
   end
 end
