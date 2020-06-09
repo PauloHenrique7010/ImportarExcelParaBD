@@ -18,6 +18,15 @@ object PrincipalFrm: TPrincipalFrm
     184)
   PixelsPerInch = 96
   TextHeight = 13
+  object lblProgresso: TLabel
+    Left = 319
+    Top = 125
+    Width = 40
+    Height = 13
+    Alignment = taRightJustify
+    Caption = '000/000'
+    Visible = False
+  end
   object btnFechar: TBitBtn
     Left = 365
     Top = 151
@@ -93,22 +102,14 @@ object PrincipalFrm: TPrincipalFrm
     TabOrder = 5
   end
   object btnImportar: TBitBtn
-    Left = 146
-    Top = 120
+    Left = 24
+    Top = 135
     Width = 150
     Height = 41
     Action = actImportar
     Anchors = []
     Caption = 'IMPORTAR'
     TabOrder = 6
-  end
-  object ListBox1: TListBox
-    Left = 8
-    Top = 74
-    Width = 121
-    Height = 97
-    ItemHeight = 13
-    TabOrder = 7
   end
   object OpenDialog1: TOpenDialog
     Left = 40

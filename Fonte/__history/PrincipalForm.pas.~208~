@@ -40,7 +40,7 @@ type
     procedure actImportarExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
-    lColunaNome, lColunaTipo : TStringList;
+    lColunaNome, lColunaBanco : TStringList;
     function importarExcel:boolean;
     procedure carregarColunasBanco;
   public
@@ -61,6 +61,7 @@ procedure TPrincipalFrm.actConfiguracoesExecute(Sender: TObject);
 begin
   Application.CreateForm(TConfiguracoesFrm, ConfiguracoesFrm);
   try
+    ConfiguracoesFrm.Iniciar;
     ConfiguracoesFrm.ShowModal;
   finally
     FreeAndNil(ConfiguracoesFrm);
@@ -131,10 +132,10 @@ begin
     while (not eof(arq)) do
     begin
       readln(arq, linha);
-      lista.Delimiter := ' ';
+      lista.Delimiter := ';';
       lista.DelimitedText := linha;
       lColunaNome.Add(lista.Strings[0]);
-      lColunaTipo.Add(lista.Strings[1]);
+      lColunaBanco.Add(lista.Strings[1]);
     end;
 
     CloseFile(arq);
@@ -168,7 +169,7 @@ begin
 
 
   lColunaNome := TStringList.Create;
-  lColunaTipo := TStringList.Create;
+  lColunaBanco := TStringList.Create;
   carregarColunasBanco;
 end;
 
@@ -183,10 +184,12 @@ var
    colunasSQL : string;
    valuesSQL : string;
   I: Integer;
+  qryImportar : TFDQuery;
 begin
   Result := False;
-  // Cria Excel- OLE Object
+  // Cria Excel- OLE Object                        8
   excel := CreateOleObject('Excel.Application');
+  qryImportar := TFDQuery.Create(nil);
   try
     Excel.WorkBooks.Open(OpenDialog1.FileName);
     Excel.Visible := false;
@@ -205,41 +208,24 @@ begin
       if (colunasSQL <> '') then
         colunasSQL := colunasSQL + ', ';
       colunasSQL := colunasSQL + lColunaNome.Strings[I];
-
-      ConexaoDtm.qry.Fields.Add(lColunaNome.Strings[i]);
     end;
     colunasSQL := '('+colunasSQL+')';
 
-    ConexaoDtm.qry.Fields.Clear;
+
+    qryImportar.Close;
+
     for cont := 2 to (totalLinha+1) do
     begin
-      for I := 1 to lColunaNome.Count do
+      for I := 0 to lColunaNome.Count-1 do
       begin
         nome := Sheet.Cells[cont, i];
 
 
 
       end;
-      
       //coluna2 Sheet.Cells[cont, 2].value;
 
     end;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     SetLength(Matriz,totalLinha,totalColuna);
     for cont := 2 to (totalLinha+1) do
     begin

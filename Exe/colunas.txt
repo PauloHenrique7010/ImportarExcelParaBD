@@ -1,2 +1,3 @@
-nome string
-idade integer
+1;nome;string
+2;idade;integer
+4;endereco;string

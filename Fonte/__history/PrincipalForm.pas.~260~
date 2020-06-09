@@ -28,9 +28,9 @@ type
     btnLimparCaminho: TBitBtn;
     actImportar: TAction;
     btnImportar: TBitBtn;
-    ListBox1: TListBox;
     qryImportar: TFDQuery;
     cmdImportar: TFDCommand;
+    lblProgresso: TLabel;
     procedure actFecharExecute(Sender: TObject);
     procedure actPegarExcelExecute(Sender: TObject);
     procedure actConfiguracoesExecute(Sender: TObject);
@@ -40,7 +40,7 @@ type
     procedure actImportarExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
-    lColunaNome, lColunaTipo : TStringList;
+    lColunaExcel, lColunaBanco, lColunaTipo : TStringList;
     function importarExcel:boolean;
     procedure carregarColunasBanco;
   public
@@ -61,6 +61,7 @@ procedure TPrincipalFrm.actConfiguracoesExecute(Sender: TObject);
 begin
   Application.CreateForm(TConfiguracoesFrm, ConfiguracoesFrm);
   try
+    ConfiguracoesFrm.Iniciar;
     ConfiguracoesFrm.ShowModal;
   finally
     FreeAndNil(ConfiguracoesFrm);
@@ -131,10 +132,11 @@ begin
     while (not eof(arq)) do
     begin
       readln(arq, linha);
-      lista.Delimiter := ' ';
+      lista.Delimiter := ';';
       lista.DelimitedText := linha;
-      lColunaNome.Add(lista.Strings[0]);
-      lColunaTipo.Add(lista.Strings[1]);
+      lColunaExcel.Add(lista.Strings[0]);
+      lColunaBanco.Add(lista.Strings[1]);
+      lColunaTipo.Add(lista.Strings[2]);
     end;
 
     CloseFile(arq);
@@ -167,8 +169,9 @@ begin
     Application.Terminate;
 
 
-  lColunaNome := TStringList.Create;
-  lColunaTipo := TStringList.Create;
+  lColunaExcel := TStringList.Create;
+  lColunaBanco := TStringList.Create;
+  lColunaTipo  := TStringList.Create;
   carregarColunasBanco;
 end;
 
@@ -183,11 +186,14 @@ var
    colunasSQL : string;
    valuesSQL : string;
   I: Integer;
-  qryImportar : TFDQuery;
+
+  colunaExcel : integer;
 begin
   Result := False;
-  // Cria Excel- OLE Object
+  // Cria Excel- OLE Object                        8
   excel := CreateOleObject('Excel.Application');
+  colunasSQL := '';
+  valuesSQL := '';
   qryImportar := TFDQuery.Create(nil);
   try
     Excel.WorkBooks.Open(OpenDialog1.FileName);
@@ -202,57 +208,54 @@ begin
     totalLinha := 2;
 
     colunasSQL := '';
-    for I := 0 to lColunaNome.Count-1 do
+    for I := 0 to lColunaBanco.Count-1 do
     begin
       if (colunasSQL <> '') then
         colunasSQL := colunasSQL + ', ';
-      colunasSQL := colunasSQL + lColunaNome.Strings[I];
+      colunasSQL := colunasSQL + lColunaBanco.Strings[I];
     end;
     colunasSQL := '('+colunasSQL+')';
 
-    ConexaoDtm.qry.Fields.Clear;
-    for cont := 2 to (totalLinha+1) do
+
+    if (rdbZerar.Checked) then
     begin
-      for I := 1 to lColunaNome.Count do
+      cmdImportar.CommandText.Text := 'truncate table raspagem_excel;';
+      cmdImportar.Execute();
+    end;
+
+    qryImportar.Close;
+
+    lblProgresso.Visible := True;
+    for cont := 2 to (totalLinha+2) do
+    begin
+      lblProgresso.Caption := 'Importado '+Format('%3.3d',[cont-1])+'/'+
+                                           Format('%3.3d',[totalLinha+1]);
+      lblProgresso.Update;
+
+      valuesSQL := '(';
+      for I := 0 to lColunaExcel.Count-1 do
       begin
-        nome := Sheet.Cells[cont, i];
+        colunaExcel := StrToInt(lColunaExcel.Strings[i]);
+        nome := Sheet.Cells[cont, colunaExcel].value;
 
+        if (valuesSQL.Length > 1) then
+          valuesSQL := valuesSQL + ', ';
 
-
+        if (lColunaTipo.Strings[i] = 'string') then
+          valuesSQL := valuesSQL + '"'+nome+'"'
+        else if (lColunaTipo.Strings[i] = 'integer') then
+          valuesSQL := valuesSQL + nome;
       end;
-      
-      //coluna2 Sheet.Cells[cont, 2].value;
+      valuesSQL := valuesSQL + ')';
+      cmdImportar.CommandText.Text := 'INSERT INTO raspagem_excel '+colunasSQL+
+                                      ' VALUES '+valuesSQL+';';
+      cmdImportar.Execute();
+
 
     end;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    SetLength(Matriz,totalLinha,totalColuna);
-    for cont := 2 to (totalLinha+1) do
-    begin
-      //linha, coluna
-      matriz[cont-2,0] := Sheet.Cells[cont, 1].value;
-      matriz[cont-2,1] := Sheet.Cells[cont, 2].value;
-    end;
-
-    for cont := 2 to (totalLinha+1) do
-    begin
-      ListBox1.Items.Add(Matriz[cont-2,0]+'-'+Matriz[cont-2,1]);
-    end;
+    Application.MessageBox('DADOS IMPORTADOS COM SUCESSO!','IMPORTAR',MB_ICONASTERISK);
   finally
+    excel.Workbooks.close;
     excel.quit;
   end;
 end;

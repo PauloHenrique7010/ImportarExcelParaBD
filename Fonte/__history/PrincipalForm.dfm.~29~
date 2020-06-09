@@ -3,7 +3,7 @@ object PrincipalFrm: TPrincipalFrm
   Top = 0
   Caption = 'IMPORTAR ARQUIVO EXCEL PARA BANCO DE DADOS'
   ClientHeight = 184
-  ClientWidth = 502
+  ClientWidth = 473
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -14,12 +14,12 @@ object PrincipalFrm: TPrincipalFrm
   Position = poScreenCenter
   OnCreate = FormCreate
   DesignSize = (
-    502
+    473
     184)
   PixelsPerInch = 96
   TextHeight = 13
   object btnFechar: TBitBtn
-    Left = 394
+    Left = 365
     Top = 151
     Width = 100
     Height = 25
@@ -29,7 +29,7 @@ object PrincipalFrm: TPrincipalFrm
     TabOrder = 0
   end
   object btnConfiguracao: TBitBtn
-    Left = 394
+    Left = 365
     Top = 120
     Width = 100
     Height = 25
@@ -93,7 +93,7 @@ object PrincipalFrm: TPrincipalFrm
     TabOrder = 5
   end
   object btnImportar: TBitBtn
-    Left = 160
+    Left = 146
     Top = 120
     Width = 150
     Height = 41
@@ -101,6 +101,14 @@ object PrincipalFrm: TPrincipalFrm
     Anchors = []
     Caption = 'IMPORTAR'
     TabOrder = 6
+  end
+  object ListBox1: TListBox
+    Left = 8
+    Top = 74
+    Width = 121
+    Height = 97
+    ItemHeight = 13
+    TabOrder = 7
   end
   object OpenDialog1: TOpenDialog
     Left = 40
@@ -127,5 +135,13 @@ object PrincipalFrm: TPrincipalFrm
       Caption = 'IMPORTAR'
       OnExecute = actImportarExecute
     end
+  end
+  object qryImportar: TFDQuery
+    Connection = ConexaoDtm.Conexao
+    Left = 80
+  end
+  object cmdImportar: TFDCommand
+    Connection = ConexaoDtm.Conexao
+    Left = 144
   end
 end
