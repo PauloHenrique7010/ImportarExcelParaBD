@@ -30,6 +30,7 @@ type
     btnImportar: TBitBtn;
     cmdImportar: TFDCommand;
     lblProgresso: TLabel;
+    Label1: TLabel;
     procedure actFecharExecute(Sender: TObject);
     procedure actPegarExcelExecute(Sender: TObject);
     procedure actConfiguracoesExecute(Sender: TObject);
@@ -43,6 +44,7 @@ type
     function importarExcel:boolean;
     procedure carregarColunasBanco;
   public
+    tabela : string;
     caminhoEXE:string;
   end;
 
@@ -115,6 +117,10 @@ var
   nomeColuna, tipoColuna : string;
   lista : TStringList;
 begin
+  lColunaExcel.Clear;
+  lColunaBanco.Clear;
+  lColunaTipo.Clear;
+
   caminho := CaminhoEXE+'\colunas.txt';
   lista := Tstringlist.Create;
   AssignFile(arq, caminho);
@@ -169,6 +175,7 @@ begin
   lColunaExcel := TStringList.Create;
   lColunaBanco := TStringList.Create;
   lColunaTipo  := TStringList.Create;
+  tabela       := 'raspagem_excel';
   carregarColunasBanco;
 end;
 
@@ -183,14 +190,22 @@ begin
   Result := False;
   excel := CreateOleObject('Excel.Application');
   try
+    carregarColunasBanco;
     Excel.WorkBooks.Open(OpenDialog1.FileName);
     Excel.Visible := false;
     Sheet := Excel.Workbooks[1].WorkSheets[1];
 
     // Pegar o número da última linha
-    totalLinha := excel.ActiveCell.Row;
+    totalLinha := excel.Cells.SpecialCells(11).Row;
     // Pegar o número da última coluna
     totalColuna := excel.ActiveCell.Column;
+
+    if (rdbZerar.Checked) then
+    begin
+      cmdImportar.CommandText.Text := 'TRUNCATE TABLE '+tabela+';';
+      cmdImportar.Execute();
+    end;
+
 
     //monta a string que vai conter quais colunas serão utilizadas no insert
     colunasSQL := '';
@@ -203,10 +218,10 @@ begin
     colunasSQL := '('+colunasSQL+')';
 
     lblProgresso.Visible := True;
-    for cont := 2 to (totalLinha+2) do
+    for cont := 2 to (totalLinha) do
     begin
-      lblProgresso.Caption := 'Importado '+Format('%3.3d',[cont-1])+'/'+
-                                           Format('%3.3d',[totalLinha+1]);
+      lblProgresso.Caption := 'Importado '+Format('%3.3d',[cont-1])+' de '+
+                                           Format('%3.3d',[totalLinha-1]);
       lblProgresso.Update;
 
       valuesSQL := '(';
@@ -223,7 +238,7 @@ begin
           valuesSQL := valuesSQL + valorExcel;
       end;
       valuesSQL := valuesSQL + ')';
-      cmdImportar.CommandText.Text := 'INSERT INTO raspagem_excel '+colunasSQL+
+      cmdImportar.CommandText.Text := 'INSERT INTO '+tabela+' '+colunasSQL+
                                       ' VALUES '+valuesSQL+';';
       cmdImportar.Execute();
     end;

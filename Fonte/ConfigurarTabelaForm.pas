@@ -5,7 +5,9 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Actions, Vcl.ActnList,
-  Vcl.StdCtrls, Vcl.Buttons, Vcl.Grids, Data.DB, Vcl.DBGrids;
+  Vcl.StdCtrls, Vcl.Buttons, Vcl.Grids, Data.DB, Vcl.DBGrids, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.Stan.Param, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.Comp.Client;
 
 type
   TConfigurarTabelaFrm = class(TForm)
@@ -15,8 +17,12 @@ type
     btnAdicionar: TBitBtn;
     actAdicionarColuna: TAction;
     lstColunas: TListBox;
+    btnExcluir: TBitBtn;
+    actExcluir: TAction;
+    cmd: TFDCommand;
     procedure actFecharExecute(Sender: TObject);
     procedure actAdicionarColunaExecute(Sender: TObject);
+    procedure actExcluirExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -29,25 +35,19 @@ var
 implementation
 
 uses
-  FireDAC.Comp.Client, ConexaoData, NovaColunaForm;
+ ConexaoData, NovaColunaForm, PrincipalForm;
 
 {$R *.dfm}
 
 procedure TConfigurarTabelaFrm.actAdicionarColunaExecute(Sender: TObject);
-var
-  cmd : TFDCommand;
 begin
   Application.CreateForm(TNovaColunaFrm, NovaColunaFrm);
   try
     if (NovaColunaFrm.ShowModal = mrOk) then
     begin
       try
-        cmd := TFDCommand.Create(nil);
-
-        cmd.Connection := ConexaoDtm.Conexao;
-        cmd.CommandText.Text := 'ALTER TABLE raspagem_excel add column '+NovaColunaFrm.edtNomeColuna.Text+';';
+        cmd.CommandText.Text := 'ALTER TABLE '+PrincipalFrm.tabela+' add column '+NovaColunaFrm.edtNomeColuna.Text+';';
         cmd.Execute();
-        cmd.Free;
 
         iniciar;
       except
@@ -57,6 +57,22 @@ begin
     end;
   finally
     FreeAndNil(NovaColunaFrm);
+  end;
+end;
+
+procedure TConfigurarTabelaFrm.actExcluirExecute(Sender: TObject);
+begin
+  if (lstColunas.ItemIndex < 0) then
+    Application.MessageBox('Escolha um item para excluir!','EXCLUIR',MB_OK)
+  else
+  begin
+    cmd.CommandText.Text := 'ALTER TABLE '+PrincipalFrm.tabela+' DROP COLUMN '+lstColunas.Items.Strings[lstColunas.ItemIndex]+';';
+    cmd.Execute();
+
+    iniciar;
+
+
+
   end;
 end;
 
@@ -76,7 +92,7 @@ begin
 
     qryColunas.Close;
     qryColunas.SQL.Clear;
-    qryColunas.SQL.Add('SHOW COLUMNS FROM raspagem_excel');
+    qryColunas.SQL.Add('SHOW COLUMNS FROM '+PrincipalFrm.tabela);
     qryColunas.Open();
     if (qryColunas.RecordCount > 0) then
     begin

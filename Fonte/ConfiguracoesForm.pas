@@ -15,11 +15,10 @@ type
     ActionList1: TActionList;
     btnFechar: TBitBtn;
     actFechar: TAction;
-    btnVerificarDatabase: TBitBtn;
     edtNomeDatabase: TEdit;
     actCriarDatabase: TAction;
     actVerificarDatabase: TAction;
-    BitBtn1: TBitBtn;
+    btnCriar: TBitBtn;
     btnConfigurarConexao: TBitBtn;
     actConfigurarBD: TAction;
     btnConfigurarTabela: TBitBtn;
@@ -44,7 +43,7 @@ implementation
 
 {$R *.dfm}
 
-uses ConexaoData, ConexaoForm, ConfigurarTabelaForm;
+uses ConexaoData, ConexaoForm, ConfigurarTabelaForm, PrincipalForm;
 
 procedure TConfiguracoesFrm.actConfigurarBDExecute(Sender: TObject);
 begin
@@ -143,12 +142,12 @@ begin
 
     qry.Close;
     qry.SQL.Clear;
-    qry.SQL.Add('SHOW TABLES like "raspagem_excel"');
+    qry.SQL.Add('SHOW TABLES like "'+PrincipalFrm.tabela+'"');
     qry.Open();
     if (qry.RecordCount > 0) then
       result := True
     else
-      Application.MessageBox('Não existe a tabela raspagem_excel no banco de dados','CONFIGURAR',MB_ICONWARNING);
+      Application.MessageBox(Pchar('Não existe a tabela '+PrincipalFrm.tabela+' no banco de dados'),'CONFIGURAR',MB_ICONWARNING);
   finally
     qry.Free;
   end;

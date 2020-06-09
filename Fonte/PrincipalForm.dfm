@@ -27,6 +27,13 @@ object PrincipalFrm: TPrincipalFrm
     Caption = '000/000'
     Visible = False
   end
+  object Label1: TLabel
+    Left = 24
+    Top = 14
+    Width = 156
+    Height = 13
+    Caption = 'Informe o caminho arquivo excel'
+  end
   object btnFechar: TBitBtn
     Left = 365
     Top = 151
@@ -35,7 +42,7 @@ object PrincipalFrm: TPrincipalFrm
     Action = actFechar
     Anchors = [akRight, akBottom]
     Caption = 'FECHAR(ESC)'
-    TabOrder = 0
+    TabOrder = 6
   end
   object btnConfiguracao: TBitBtn
     Left = 365
@@ -44,15 +51,17 @@ object PrincipalFrm: TPrincipalFrm
     Height = 25
     Action = actConfiguracoes
     Anchors = [akRight, akBottom]
-    Caption = 'Configura'#231#245'es'
-    TabOrder = 1
+    Caption = 'CONFIGURA'#199#213'ES'
+    TabOrder = 5
   end
   object edtCaminhoExcel: TEdit
     Left = 24
     Top = 32
     Width = 329
     Height = 21
-    TabOrder = 2
+    TabStop = False
+    ReadOnly = True
+    TabOrder = 0
     TextHint = 'Informe o arquivo excel'
   end
   object btnPegarExcel: TBitBtn
@@ -62,15 +71,15 @@ object PrincipalFrm: TPrincipalFrm
     Height = 25
     Action = actPegarExcel
     Caption = 'BUSCAR'
-    TabOrder = 3
+    TabOrder = 1
   end
   object grbOpcoes: TGroupBox
     Left = 24
     Top = 59
     Width = 241
     Height = 38
-    Caption = 'grbOpcoes'
-    TabOrder = 4
+    Caption = 'Ao importar informa'#231#245'es:'
+    TabOrder = 3
     object rdbZerar: TRadioButton
       Left = 14
       Top = 15
@@ -99,7 +108,7 @@ object PrincipalFrm: TPrincipalFrm
     Height = 25
     Action = actLimparCaminho
     Caption = 'LIMPAR'
-    TabOrder = 5
+    TabOrder = 2
   end
   object btnImportar: TBitBtn
     Left = 24
@@ -109,9 +118,10 @@ object PrincipalFrm: TPrincipalFrm
     Action = actImportar
     Anchors = []
     Caption = 'IMPORTAR'
-    TabOrder = 6
+    TabOrder = 4
   end
   object OpenDialog1: TOpenDialog
+    Filter = 'Arquivo Excel|*.CSV;*.XLS;*.XLSX'
     Left = 40
   end
   object ActionList1: TActionList
@@ -125,7 +135,7 @@ object PrincipalFrm: TPrincipalFrm
       OnExecute = actPegarExcelExecute
     end
     object actConfiguracoes: TAction
-      Caption = 'Configura'#231#245'es'
+      Caption = 'CONFIGURA'#199#213'ES'
       OnExecute = actConfiguracoesExecute
     end
     object actLimparCaminho: TAction

@@ -64,7 +64,7 @@ begin
         cmd.Execute();
         cmd.CommandText.Text := 'USE '+edtBD.Text+';';
         cmd.Execute();
-        cmd.CommandTExt.Text := 'CREATE TABLE IF NOT EXISTS raspagem_excel (codigo int primary key auto_increment);';
+        cmd.CommandTExt.Text := 'CREATE TABLE IF NOT EXISTS '+PrincipalFrm.tabela+' (codigo int primary key auto_increment);';
         cmd.Execute();
         //se conseguiu criar o banco de dados com o database, adiciona aos parametros
         ConexaoDtm.Conexao.Params.Values['Database']  := edtBD.Text;

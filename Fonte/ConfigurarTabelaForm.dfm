@@ -2,8 +2,8 @@ object ConfigurarTabelaFrm: TConfigurarTabelaFrm
   Left = 0
   Top = 0
   Caption = 'CONFIGURAR TABELA'
-  ClientHeight = 415
-  ClientWidth = 618
+  ClientHeight = 299
+  ClientWidth = 280
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,37 +13,48 @@ object ConfigurarTabelaFrm: TConfigurarTabelaFrm
   OldCreateOrder = False
   Position = poScreenCenter
   DesignSize = (
-    618
-    415)
+    280
+    299)
   PixelsPerInch = 96
   TextHeight = 13
   object btnFechar: TBitBtn
-    Left = 510
-    Top = 382
+    Left = 172
+    Top = 266
     Width = 100
     Height = 25
     Action = actFechar
     Anchors = [akRight, akBottom]
     Caption = 'FECHAR(ESC)'
-    TabOrder = 0
-    ExplicitLeft = 339
-    ExplicitTop = 168
+    TabOrder = 3
+    ExplicitLeft = 510
+    ExplicitTop = 382
   end
   object btnAdicionar: TBitBtn
-    Left = 510
-    Top = 351
+    Left = 172
+    Top = 204
     Width = 100
     Height = 25
     Action = actAdicionarColuna
+    Anchors = [akRight, akBottom]
     Caption = 'ADICIONAR'
     TabOrder = 1
   end
   object lstColunas: TListBox
-    Left = 40
-    Top = 40
+    Left = 16
+    Top = 24
     Width = 137
     Height = 265
     ItemHeight = 13
+    TabOrder = 0
+  end
+  object btnExcluir: TBitBtn
+    Left = 172
+    Top = 235
+    Width = 100
+    Height = 25
+    Action = actExcluir
+    Anchors = [akRight, akBottom]
+    Caption = 'EXCLUIR'
     TabOrder = 2
   end
   object ActionList1: TActionList
@@ -56,5 +67,13 @@ object ConfigurarTabelaFrm: TConfigurarTabelaFrm
       Caption = 'ADICIONAR'
       OnExecute = actAdicionarColunaExecute
     end
+    object actExcluir: TAction
+      Caption = 'EXCLUIR'
+      OnExecute = actExcluirExecute
+    end
+  end
+  object cmd: TFDCommand
+    Connection = ConexaoDtm.Conexao
+    Left = 32
   end
 end

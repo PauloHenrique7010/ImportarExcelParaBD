@@ -24,16 +24,14 @@ object NovaColunaFrm: TNovaColunaFrm
     Height = 25
     Anchors = [akRight, akBottom]
     Caption = 'FECHAR(ESC)'
-    TabOrder = 0
-    ExplicitLeft = 256
-    ExplicitTop = 122
+    TabOrder = 2
   end
   object edtNomeColuna: TEdit
     Left = 24
     Top = 31
     Width = 197
     Height = 21
-    TabOrder = 1
+    TabOrder = 0
     TextHint = 'nome varchar(50) not null'
   end
   object btnConfirmar: TBitBtn
@@ -44,9 +42,7 @@ object NovaColunaFrm: TNovaColunaFrm
     Action = actConfirmar
     Anchors = [akRight, akBottom]
     Caption = 'CONFIRMAR'
-    TabOrder = 2
-    ExplicitLeft = 256
-    ExplicitTop = 91
+    TabOrder = 1
   end
   object ActionList1: TActionList
     object actFechar: TAction
