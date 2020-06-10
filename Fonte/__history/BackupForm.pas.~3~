@@ -1,0 +1,31 @@
+unit BackupForm;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Actions, Vcl.ActnList,
+  Vcl.StdCtrls, Vcl.Buttons;
+
+type
+  TBackupFrm = class(TForm)
+    btnFechar: TBitBtn;
+    edtCaminho: TEdit;
+    btnConfirmar: TBitBtn;
+    ActionList1: TActionList;
+    actFechar: TAction;
+    actConfirmar: TAction;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  BackupFrm: TBackupFrm;
+
+implementation
+
+{$R *.dfm}
+
+end.

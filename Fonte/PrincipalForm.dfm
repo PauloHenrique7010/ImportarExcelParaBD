@@ -2,7 +2,7 @@ object PrincipalFrm: TPrincipalFrm
   Left = 0
   Top = 0
   Caption = 'IMPORTAR ARQUIVO EXCEL PARA BANCO DE DADOS'
-  ClientHeight = 184
+  ClientHeight = 200
   ClientWidth = 473
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -15,17 +15,20 @@ object PrincipalFrm: TPrincipalFrm
   OnCreate = FormCreate
   DesignSize = (
     473
-    184)
+    200)
   PixelsPerInch = 96
   TextHeight = 13
   object lblProgresso: TLabel
     Left = 319
-    Top = 125
+    Top = 141
     Width = 40
     Height = 13
     Alignment = taRightJustify
+    Anchors = [akRight, akBottom]
     Caption = '000/000'
     Visible = False
+    ExplicitLeft = 348
+    ExplicitTop = 140
   end
   object Label1: TLabel
     Left = 24
@@ -36,23 +39,25 @@ object PrincipalFrm: TPrincipalFrm
   end
   object btnFechar: TBitBtn
     Left = 365
-    Top = 151
+    Top = 167
     Width = 100
     Height = 25
     Action = actFechar
     Anchors = [akRight, akBottom]
     Caption = 'FECHAR(ESC)'
     TabOrder = 6
+    ExplicitTop = 151
   end
   object btnConfiguracao: TBitBtn
     Left = 365
-    Top = 120
+    Top = 136
     Width = 100
     Height = 25
     Action = actConfiguracoes
     Anchors = [akRight, akBottom]
     Caption = 'CONFIGURA'#199#213'ES'
     TabOrder = 5
+    ExplicitTop = 120
   end
   object edtCaminhoExcel: TEdit
     Left = 24
@@ -76,23 +81,23 @@ object PrincipalFrm: TPrincipalFrm
   object grbOpcoes: TGroupBox
     Left = 24
     Top = 59
-    Width = 241
+    Width = 300
     Height = 38
     Caption = 'Ao importar informa'#231#245'es:'
     TabOrder = 3
     object rdbZerar: TRadioButton
       Left = 14
       Top = 15
-      Width = 99
+      Width = 155
       Height = 17
-      Caption = 'Zerar Registros'
+      Caption = 'Apagar registros anteriores'
       Checked = True
       TabOrder = 0
       TabStop = True
       OnClick = rdbZerarClick
     end
     object rdbAdicionar: TRadioButton
-      Left = 119
+      Left = 178
       Top = 15
       Width = 114
       Height = 17
@@ -111,14 +116,22 @@ object PrincipalFrm: TPrincipalFrm
     TabOrder = 2
   end
   object btnImportar: TBitBtn
-    Left = 24
-    Top = 135
+    Left = 8
+    Top = 103
     Width = 150
     Height = 41
     Action = actImportar
-    Anchors = []
     Caption = 'IMPORTAR'
     TabOrder = 4
+  end
+  object btnBackup: TBitBtn
+    Left = 8
+    Top = 148
+    Width = 150
+    Height = 41
+    Action = actBackup
+    Caption = 'BACKUP'
+    TabOrder = 7
   end
   object OpenDialog1: TOpenDialog
     Filter = 'Arquivo Excel|*.CSV;*.XLS;*.XLSX'
@@ -146,9 +159,19 @@ object PrincipalFrm: TPrincipalFrm
       Caption = 'IMPORTAR'
       OnExecute = actImportarExecute
     end
+    object actBackup: TAction
+      Caption = 'BACKUP'
+      OnExecute = actBackupExecute
+    end
   end
   object cmdImportar: TFDCommand
     Connection = ConexaoDtm.Conexao
     Left = 80
+  end
+  object SaveDialog1: TSaveDialog
+    DefaultExt = '.sql'
+    Filter = 'Arquivo SQL|*.SQL;'
+    Left = 160
+    Top = 160
   end
 end

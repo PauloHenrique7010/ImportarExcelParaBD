@@ -12,16 +12,20 @@
     <Transaction>2020/06/02 20:05:57.000.045,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\ConfiguracoesForm.pas=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.pas</Transaction>
     <Transaction>2020/06/02 20:05:57.000.045,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\ConfiguracoesForm.dfm=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.dfm</Transaction>
     <Transaction>2020/06/02 20:08:49.000.512,=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.pas</Transaction>
-    <Transaction>2020/06/02 20:08:58.000.419,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\ConexaoData.pas=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.pas</Transaction>
     <Transaction>2020/06/02 20:08:58.000.419,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\ConexaoData.dfm=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.dfm</Transaction>
+    <Transaction>2020/06/02 20:08:58.000.419,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\ConexaoData.pas=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.pas</Transaction>
     <Transaction>2020/06/03 10:48:07.000.371,=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.pas</Transaction>
     <Transaction>2020/06/03 10:48:18.000.419,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.pas=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\ConexaoForm.pas</Transaction>
     <Transaction>2020/06/03 10:48:18.000.419,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.dfm=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\ConexaoForm.dfm</Transaction>
     <Transaction>2020/06/07 19:33:15.000.392,=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.pas</Transaction>
-    <Transaction>2020/06/07 19:33:25.000.962,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.dfm=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\ConfigurarTabelaForm.dfm</Transaction>
     <Transaction>2020/06/07 19:33:25.000.962,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.pas=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\ConfigurarTabelaForm.pas</Transaction>
+    <Transaction>2020/06/07 19:33:25.000.962,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.dfm=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\ConfigurarTabelaForm.dfm</Transaction>
     <Transaction>2020/06/07 20:15:16.000.340,=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.pas</Transaction>
-    <Transaction>2020/06/07 20:15:52.000.688,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.dfm=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\NovaColunaForm.dfm</Transaction>
     <Transaction>2020/06/07 20:15:52.000.688,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.pas=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\NovaColunaForm.pas</Transaction>
+    <Transaction>2020/06/07 20:15:52.000.688,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.dfm=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\NovaColunaForm.dfm</Transaction>
+    <Transaction>2020/06/10 08:58:43.125,=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.pas</Transaction>
+    <Transaction>2020/06/10 08:58:48.917,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\BackupForm.pas=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.pas</Transaction>
+    <Transaction>2020/06/10 08:58:48.917,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\BackupForm.dfm=C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\Unit1.dfm</Transaction>
+    <Transaction>2020/06/10 09:57:33.686,C:\Users\Paulo\Desktop\ImportarExcelParaBanco\Fonte\BackupForm.pas=</Transaction>
   </Transactions>
 </BorlandProject>

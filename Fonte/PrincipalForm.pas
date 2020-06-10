@@ -8,7 +8,7 @@ uses
   Vcl.StdCtrls, Vcl.Buttons, Vcl.ActnMan, comobj, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
-  Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+  Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, ShellAPI;
 
 type
   TPrincipalFrm = class(TForm)
@@ -31,6 +31,9 @@ type
     cmdImportar: TFDCommand;
     lblProgresso: TLabel;
     Label1: TLabel;
+    actBackup: TAction;
+    btnBackup: TBitBtn;
+    SaveDialog1: TSaveDialog;
     procedure actFecharExecute(Sender: TObject);
     procedure actPegarExcelExecute(Sender: TObject);
     procedure actConfiguracoesExecute(Sender: TObject);
@@ -39,9 +42,12 @@ type
     procedure actLimparCaminhoExecute(Sender: TObject);
     procedure actImportarExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure actBackupExecute(Sender: TObject);
   private
     lColunaExcel, lColunaBanco, lColunaTipo : TStringList;
     function importarExcel:boolean;
+    function verificarColunaTXTBateComColunaBanco:boolean;
+    function colunaConfigurada:boolean;
     procedure carregarColunasBanco;
   public
     tabela : string;
@@ -56,6 +62,49 @@ implementation
 {$R *.dfm}
 
 uses ConfiguracoesForm, ConexaoData, ConexaoForm;
+
+procedure TPrincipalFrm.actBackupExecute(Sender: TObject);
+procedure ExcluirBat();
+begin
+  if (FileExists(caminhoEXE+'backup.bat')) then
+        DeleteFile(caminhoEXE+'backup.bat');
+end;
+var
+  comando : string;
+  arq : TextFile;
+begin
+  if (SaveDialog1.Execute) then
+  begin
+    if (SaveDialog1.FileName <> '') then
+    begin
+      comando := 'mysqldump -u '+ConexaoDtm.Conexao.Params.Values['User_name']+
+                 ' -p'+ConexaoDtm.Conexao.Params.Values['Password']+
+                 ' --opt -v '+
+                 ' '+ConexaoDtm.Conexao.Params.Values['Database']+
+                 ' --tables '+tabela+' > '+SaveDialog1.FileName;
+
+      //cria o arquivo bat
+      ExcluirBat;
+
+
+      AssignFile(arq, caminhoExe+'backup.bat');
+      Rewrite(arq);
+
+      Writeln(arq, comando);
+      CloseFile(arq);
+
+
+      ShellExecute(handle,'open',pchar(caminhoEXE+'backup.bat'), '','',SW_SHOWNORMAL);
+
+      ExcluirBat;
+
+      if (FileExists(SaveDialog1.FileName)) then
+        ShowMessage('Backup criado com sucesso!')
+      else
+        ShowMessage('Ocorreu algum erro!');
+    end;
+  end;
+end;
 
 procedure TPrincipalFrm.actConfiguracoesExecute(Sender: TObject);
 begin
@@ -74,21 +123,11 @@ begin
 end;
 
 procedure TPrincipalFrm.actImportarExecute(Sender: TObject);
-var
-  podeImportar  : boolean;
-  msgAviso      : string;
 begin
-  msgAviso      := '';
-  podeImportar  := True;
-
   if (edtCaminhoExcel.Text = '') then
-  begin
-    msgAviso      := msgAviso + 'Informe o arquivo excel a ser importado';
-    podeImportar  := False;
-  end;
-
-  if (podeImportar = false) then
-    Application.MessageBox(Pchar(msgAviso), 'IMPORTAR', MB_ICONWARNING)
+    Application.MessageBox('Informe o arquivo a ser importado', 'IMPORTAR', MB_ICONWARNING)
+  else if (verificarColunaTXTBateComColunaBanco = false) then
+    Application.MessageBox('Verifique se as colunas informadas no arquivo de configuração, existem no banco/tabela informado','IMPORTAR',MB_ICONERROR)
   else
   begin
     if (importarExcel) then
@@ -113,7 +152,6 @@ procedure TPrincipalFrm.carregarColunasBanco;
 var
   arq: TextFile; { declarando a variável "arq" do tipo arquivo texto }
   linha: string;
-  caminho : string;
   nomeColuna, tipoColuna : string;
   lista : TStringList;
 begin
@@ -121,9 +159,8 @@ begin
   lColunaBanco.Clear;
   lColunaTipo.Clear;
 
-  caminho := CaminhoEXE+'\colunas.txt';
   lista := Tstringlist.Create;
-  AssignFile(arq, caminho);
+  AssignFile(arq, CaminhoEXE+'\colunasExcel.conf');
 
   {$I-}         // desativa a diretiva de Input
   Reset(arq);   // [ 3 ] Abre o arquivo texto para leitura
@@ -144,6 +181,35 @@ begin
     end;
 
     CloseFile(arq);
+  end;
+end;
+
+function TPrincipalFrm.colunaConfigurada: boolean;
+var
+  arq: TextFile;
+begin
+  result := False;
+  if (FileExists(caminhoEXE+'colunasExcel.conf')) then
+   result := True
+  else
+  begin
+    if (Application.messagebox('Arquivo de configuração das colunas do excel não foi encontrado,'+
+                               ' Deseja cria-lo agora?','CONFIGURAÇÃO',mb_YesNo+mb_IconInformation+mb_DefButton2) = IDYES) then
+    begin
+      AssignFile(arq, caminhoExe+'colunasExcel.conf');
+      Rewrite(arq);
+
+      Writeln(arq, 'Para configurar este arquivo, siga o modelo abaixo com exemplo:');
+      Writeln(arq, 'Numero da coluna no excel(começa no 1);nome da coluna no banco(nome_produto);tipo_coluna(string,integer ou float)');
+      Writeln(arq, 'Ex: ');
+      WriteLn(arq, '1;nome_produto;string');
+      WriteLn(arq, '2;descricao;string');
+      WriteLn(arq, '5;codigo_estoque;integer');
+      Writeln(arq, 'OBS: O ARQUIVO DEVE CONTER APENAS OS VALORES ESPECIFICADOS CONFORME NO MODELO ACIMA');
+      CloseFile(arq);
+
+      Application.MessageBox('Arquivo de configuração criado com o nome de colunasExcel.conf, dentro dele há instruções de como deve ser feita a configuração!','CONFIGURAR',MB_OK);
+    end;
   end;
 end;
 
@@ -168,7 +234,8 @@ begin
       ShowMessage('Não foi possível conectar!');
   end;
 
-  if (ConexaoDtm.Conexao.Connected = false) then
+  if (ConexaoDtm.Conexao.Connected = false) or
+     (colunaConfigurada = false) then
     Application.Terminate;
 
 
@@ -234,7 +301,7 @@ begin
 
         if (lColunaTipo.Strings[i] = 'string') then
           valuesSQL := valuesSQL + '"'+valorExcel+'"'
-        else if (lColunaTipo.Strings[i] = 'integer') then
+        else // (lColunaTipo.Strings[i] = 'integer') then
           valuesSQL := valuesSQL + valorExcel;
       end;
       valuesSQL := valuesSQL + ')';
@@ -260,7 +327,58 @@ procedure TPrincipalFrm.rdbZerarClick(Sender: TObject);
 begin
   if (rdbZerar.Checked) then
     rdbAdicionar.Checked := False;
+end;
 
+function TPrincipalFrm.verificarColunaTXTBateComColunaBanco: boolean;
+var
+  qryColunas : TFDQuery;
+  lColunasBD : TStringList;
+  I, J: Integer;
+  flag : boolean;
+begin
+  result := True;
+  lColunasBD := TStringList.Create;
+  qryColunas := TFDQuery.Create(nil);
+  try
+    qryColunas.Connection := ConexaoDtm.Conexao;
+
+    qryColunas.Close;
+    qryColunas.SQL.Clear;
+    qryColunas.SQL.Add('SHOW COLUMNS FROM '+PrincipalFrm.tabela);
+    qryColunas.Open();
+    if (qryColunas.RecordCount > 0) then
+    begin
+      qryColunas.First;
+      while not (qryColunas.Eof) do
+      begin
+        lColunasBD.Add(qryColunas.Fields[0].AsString);
+        qryColunas.Next;
+      end;
+    end;
+
+    for I := 0 to lColunaBanco.Count-1 do
+    begin
+      flag := False;
+      for j := 0 to lColunasBD.Count-1 do
+      begin
+        if (lColunasBD.Strings[J] = 'codigo') then
+        continue;
+        //verifico se as colunas informadas no txt estão no banco
+        if (lColunaBanco.Strings[I] = lColunasBD.Strings[J]) then
+        begin
+          flag := True;
+          break;
+        end;
+      end;
+      if (flag = false) then
+      begin
+        result := False;
+        break;
+      end;
+    end;
+  finally
+    qryColunas.Free;
+  end;
 end;
 
 end.
